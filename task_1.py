@@ -25,7 +25,22 @@ class FileWriter:
             json.dump(obj, json_file)
 
     def write_to_xml(self, obj):
-        pass
+        with open('updated_rooms.xml', 'w') as xml_file:
+            xml_file.write('<?xml version="1.0" encoding="UTF-8"?>')
+            xml_file.write('<rooms>')
+            for dct in obj:
+                xml_file.write('<room>')
+                xml_file.write('<id>' + str(dct['id']) + '</id>')
+                xml_file.write('<name>' + dct['name'] + '</name>')
+                xml_file.write('<students>')
+                for student in dct['students']:
+                    xml_file.write('<student>')
+                    xml_file.write('<id>' + str(student['id']) + '</id>')
+                    xml_file.write('<name>' + student['name'] + '</name>')
+                    xml_file.write('</student>')
+                xml_file.write('</students>')
+                xml_file.write('</room>')
+            xml_file.write('</rooms>')
 
 
 class ListsHandler:
@@ -66,6 +81,8 @@ class ListsHandler:
             self.file_writer.write_to_json(updated_room_list)
         elif self.format == 'xml':
             self.file_writer.write_to_xml(updated_room_list)
+        else:
+            print(f'There are no functionality for {self.format} format. Sorry :c\nBut you can choose json/xml c:')
 
 
 if __name__ == '__main__':
@@ -74,3 +91,5 @@ if __name__ == '__main__':
 
     obj = ListsHandler(students, rooms, 'json')
     obj.write_updated_rooms_to_file()
+    obj_2 = ListsHandler(students, rooms, 'xml')
+    obj_2.write_updated_rooms_to_file()
