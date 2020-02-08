@@ -1,5 +1,6 @@
 import copy
 import json
+import xml.etree.ElementTree as xml
 
 
 class FileHandler:
@@ -25,22 +26,25 @@ class FileWriter:
             json.dump(obj, json_file)
 
     def write_to_xml(self, obj):
-        with open('updated_rooms.xml', 'w') as xml_file:
-            xml_file.write('<?xml version="1.0" encoding="UTF-8"?>')
-            xml_file.write('<rooms>')
-            for dct in obj:
-                xml_file.write('<room>')
-                xml_file.write('<id>' + str(dct['id']) + '</id>')
-                xml_file.write('<name>' + dct['name'] + '</name>')
-                xml_file.write('<students>')
-                for student in dct['students']:
-                    xml_file.write('<student>')
-                    xml_file.write('<id>' + str(student['id']) + '</id>')
-                    xml_file.write('<name>' + student['name'] + '</name>')
-                    xml_file.write('</student>')
-                xml_file.write('</students>')
-                xml_file.write('</room>')
-            xml_file.write('</rooms>')
+        root = xml.Element('rooms')
+        for dct in obj:
+            room = xml.Element('room')
+            root.append(room)
+            room_id = xml.SubElement(room, 'id')
+            room_id.text = str(dct['id'])
+            room_name = xml.SubElement(room, 'name')
+            room_name.text = dct['name']
+            room_st = xml.SubElement(room, 'students')
+            for student in dct['students']:
+                stud = xml.SubElement(room_st, 'student')
+                st_id = xml.SubElement(stud, 'id')
+                st_id.text = str(student['id'])
+                st_name = xml.SubElement(stud, 'name')
+                st_name.text = student['name']
+
+        tree = xml.ElementTree(root)
+        with open('updated_rooms.xml', 'w') as exp_file:
+            tree.write(exp_file, encoding='unicode')
 
 
 class ListsHandler:
