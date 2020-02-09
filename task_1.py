@@ -1,6 +1,6 @@
 import copy
 import json
-import xml.etree.ElementTree as xml
+import xml.etree.ElementTree as ElemTree
 
 
 class FileHandler:
@@ -8,15 +8,10 @@ class FileHandler:
     def __init__(self, path_to_file):
         self.file_path = path_to_file
 
-    def load_file(self):
+    def json_to_obj(self):
         with open(self.file_path, 'r', encoding='utf-8') as current_file:
-            current_file = current_file.read()
-        return current_file
-
-    def decode_json(self):
-        content = self.load_file()
-        data = json.loads(content)
-        return data
+            obj = json.load(current_file)
+            return obj
 
 
 class FileWriter:
@@ -26,23 +21,23 @@ class FileWriter:
             json.dump(obj, json_file)
 
     def write_to_xml(self, obj):
-        root = xml.Element('rooms')
+        root = ElemTree.Element('rooms')
         for dct in obj:
-            room = xml.Element('room')
+            room = ElemTree.Element('room')
             root.append(room)
-            room_id = xml.SubElement(room, 'id')
+            room_id = ElemTree.SubElement(room, 'id')
             room_id.text = str(dct['id'])
-            room_name = xml.SubElement(room, 'name')
+            room_name = ElemTree.SubElement(room, 'name')
             room_name.text = dct['name']
-            room_st = xml.SubElement(room, 'students')
+            room_st = ElemTree.SubElement(room, 'students')
             for student in dct['students']:
-                stud = xml.SubElement(room_st, 'student')
-                st_id = xml.SubElement(stud, 'id')
+                stud = ElemTree.SubElement(room_st, 'student')
+                st_id = ElemTree.SubElement(stud, 'id')
                 st_id.text = str(student['id'])
-                st_name = xml.SubElement(stud, 'name')
+                st_name = ElemTree.SubElement(stud, 'name')
                 st_name.text = student['name']
 
-        tree = xml.ElementTree(root)
+        tree = ElemTree.ElementTree(root)
         with open('updated_rooms.xml', 'w') as exp_file:
             tree.write(exp_file, encoding='unicode')
 
@@ -55,10 +50,10 @@ class ListsHandler:
         self.format = format_type
 
         st_file_handler = FileHandler(self.st_path)
-        self.students_list = st_file_handler.decode_json()
+        self.students_list = st_file_handler.json_to_obj()
 
         rooms_file_handler = FileHandler(self.room_path)
-        self.rooms_list = rooms_file_handler.decode_json()
+        self.rooms_list = rooms_file_handler.json_to_obj()
 
         self.file_writer = FileWriter()
 
