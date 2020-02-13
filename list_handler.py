@@ -17,14 +17,14 @@ class ListsHandler:
         for student in students_list:
             student_id_name = student.copy()
             student_id_name.pop('room')
-            rooms_dict[student['room']]['students'].append(student_id_name)
+            rooms_dict[student.get('room')]['students'].append(student_id_name)
         return rooms_dict
 
     def get_rooms_and_students_list(self):
         rooms_dict = {}  # key - room_id, value - list of room info
         for room in self.rooms_list:
-            rooms_dict[room['id']] = {'id': room.get('id'), 'name': room.get('name')}
-            rooms_dict[room['id']].setdefault('students', [])
+            rooms_dict[room.get('id')] = {'id': room.get('id'), 'name': room.get('name')}
+            rooms_dict[room.get('id')].setdefault('students', [])
         rooms_dict = self._add_students_to_rooms(rooms_dict, self.students_list)
         room_list = list(rooms_dict.values())
         return room_list
