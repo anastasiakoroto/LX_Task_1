@@ -14,9 +14,9 @@ class ArgParser:
         return parser
 
     def is_valid_file(self, filepath):
-        if not os.path.exists(filepath):
-            return False
-        return True
+        if os.path.exists(filepath):
+            return True
+        return False
 
     def run_command_line(self):
         parser = self.create_parser()
@@ -27,6 +27,8 @@ class ArgParser:
         if self.is_valid_file(students_file_path) and self.is_valid_file(rooms_file_path):
             list_handler = ListsHandler(students_file_path, rooms_file_path, output_format)
             list_handler.write_updated_rooms_to_file()
+        else:
+            print("Unfortunately, file doesn't exist. Please, check the path to each required file.")
 
 
 if __name__ == '__main__':

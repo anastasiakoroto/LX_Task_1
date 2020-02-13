@@ -12,6 +12,7 @@ class JSONHandler:
     def write_rooms_list_to_json(self, rooms_list):
         with open('output_files/updated_rooms.json', 'w') as json_file:
             json.dump(rooms_list, json_file)
+            print('Updated list of rooms was added to output_files/updated_rooms.json successfully!')
 
 
 class XMLWriter:
@@ -40,3 +41,4 @@ class XMLWriter:
         xml_tree = self._parse_rooms_to_xml(rooms_list)
         with open('output_files/updated_rooms.xml', 'w') as xml_file:
             xml_tree.write(xml_file, encoding='unicode')
+            print('Updated list of rooms was added to output_files/updated_rooms.xml successfully!')
