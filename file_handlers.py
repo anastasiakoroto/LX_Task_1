@@ -10,7 +10,7 @@ class JSONHandler:
             return obj
 
     def write_rooms_list_to_json(self, rooms_list):
-        with open('updated_rooms.json', 'w') as json_file:
+        with open('output_files/updated_rooms.json', 'w') as json_file:
             json.dump(rooms_list, json_file)
 
 
@@ -38,5 +38,5 @@ class XMLWriter:
 
     def write_rooms_list_to_xml(self, rooms_list):
         xml_tree = self._parse_rooms_to_xml(rooms_list)
-        with open('updated_rooms.xml', 'w') as xml_file:
+        with open('output_files/updated_rooms.xml', 'w') as xml_file:
             xml_tree.write(xml_file, encoding='unicode')

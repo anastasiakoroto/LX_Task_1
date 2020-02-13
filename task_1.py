@@ -30,8 +30,8 @@ class ArgParser:
 
 
 if __name__ == '__main__':
-    # students = '/Users/Anastasia/PycharmProjects/LeverX Course/task_1/students.json'
-    # rooms = '/Users/Anastasia/PycharmProjects/LeverX Course/task_1/rooms.json'
+    # students = '/Users/Anastasia/PycharmProjects/LeverX Course/task_1/input_files/students.json'
+    # rooms = '/Users/Anastasia/PycharmProjects/LeverX Course/task_1/input_files/rooms.json'
 
     # obj = ListsHandler(students, rooms, 'json')
     # obj.write_updated_rooms_to_file()
