@@ -13,22 +13,15 @@ class ArgParser:
         parser.add_argument('format', help='Format of output file')
         return parser
 
-    def is_valid_file(self, filepath):
-        if os.path.exists(filepath):
-            return True
-        return False
-
     def run_command_line(self):
         parser = self.create_parser()
         args = parser.parse_args()
         students_file_path = args.path_to_students_file
         rooms_file_path = args.path_to_rooms_file
         output_format = args.format
-        if self.is_valid_file(students_file_path) and self.is_valid_file(rooms_file_path):
-            list_handler = ListsHandler(students_file_path, rooms_file_path, output_format)
-            list_handler.write_updated_rooms_to_file()
-        else:
-            print("Unfortunately, file doesn't exist. Please, check the path to each required file.")
+
+        list_handler = ListsHandler(students_file_path, rooms_file_path, output_format)
+        list_handler.write_updated_rooms_to_file()
 
 
 if __name__ == '__main__':
