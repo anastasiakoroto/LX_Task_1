@@ -1,17 +1,18 @@
-from file_handlers import JSONHandler, XMLWriter
+from file_handlers import JSONConverter, JSONWriter, XMLWriter
+from task_1 import ArgParser
 
 
 class ListsHandler:
 
-    def __init__(self, students_path, room_path, format_type):
-        self.students_path = students_path
-        self.room_path = room_path
-        self.format = format_type
+    def __init__(self):
+        self.arg_parser = ArgParser()
+        students_path, room_path, self.format = self.arg_parser.get_arguments()
 
-        self.xml_handler = XMLWriter()
-        self.json_handler = JSONHandler()
-        self.students_list = self.json_handler.convert_json_to_obj(self.students_path)
-        self.rooms_list = self.json_handler.convert_json_to_obj(self.room_path)
+        self.xml_writer = XMLWriter()
+        self.json_converter = JSONConverter()
+        self.json_writer = JSONWriter()
+        self.students_list = self.json_converter.open_and_convert_to_object(students_path)
+        self.rooms_list = self.json_converter.open_and_convert_to_object(room_path)
 
     def _add_students_to_rooms(self, rooms_dict, students_list):
         for student in students_list:
@@ -32,8 +33,13 @@ class ListsHandler:
     def write_updated_rooms_to_file(self):
         updated_room_list = self.get_rooms_and_students_list()
         if self.format == 'json':
-            self.json_handler.write_rooms_list_to_json(updated_room_list)
+            self.json_writer.write(updated_room_list)
         elif self.format == 'xml':
-            self.xml_handler.write_rooms_list_to_xml(updated_room_list)
+            self.xml_writer.write(updated_room_list)
         else:
             print(f'There are no functionality for {self.format} format. Sorry :c\nBut you can choose json/xml c:')
+
+
+if __name__ == '__main__':
+    list_handler = ListsHandler()
+    list_handler.write_updated_rooms_to_file()

@@ -2,9 +2,18 @@ import json
 import xml.etree.ElementTree as ElemTree
 
 
-class JSONHandler:
+class FileConverter:
+    def open_and_convert_to_object(self, path_to_file):
+        raise NotImplementedError
 
-    def convert_json_to_obj(self, path_to_file):
+
+class FileWriter:
+    def write(self, rooms_list):
+        raise NotImplementedError
+
+
+class JSONConverter(FileConverter):
+    def open_and_convert_to_object(self, path_to_file):
         try:
             with open(path_to_file, 'r', encoding='utf-8') as json_file:
                 obj = json.load(json_file)
@@ -18,14 +27,15 @@ class JSONHandler:
         except PermissionError:
             raise PermissionError(f"Unfortunately, access to file with path {path_to_file} denied.")
 
-    def write_rooms_list_to_json(self, rooms_list):
+
+class JSONWriter(FileWriter):
+    def write(self, rooms_list):
         with open('output_files/updated_rooms.json', 'w') as json_file:
             json.dump(rooms_list, json_file)
-        print('Updated list of rooms was added to output_files/updated_rooms.json successfully!')
+        print(f'Updated list of rooms was added to output_files/updated_rooms.json successfully!')
 
 
-class XMLWriter:
-
+class XMLWriter(FileWriter):
     def _parse_rooms_to_xml(self, rooms_list):
         root = ElemTree.Element('rooms')
         for room_dictionary in rooms_list:
@@ -46,7 +56,7 @@ class XMLWriter:
         tree = ElemTree.ElementTree(root)
         return tree
 
-    def write_rooms_list_to_xml(self, rooms_list):
+    def write(self, rooms_list):
         xml_tree = self._parse_rooms_to_xml(rooms_list)
         with open('output_files/updated_rooms.xml', 'w') as xml_file:
             xml_tree.write(xml_file, encoding='unicode')
